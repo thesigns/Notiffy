@@ -11,10 +11,14 @@
 
   <ItemGroup>
     <None Remove="Resources\Notiffy.ico" />
+    <None Remove="Resources\Notifications.txt" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Resources\Notiffy.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Notifications.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

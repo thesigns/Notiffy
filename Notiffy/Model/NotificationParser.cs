@@ -1,23 +1,23 @@
 ﻿using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace Notiffy.Model
 {
     public class NotificationParser
     {
+        private static string NotificationPattern { get; set; } = @"^(\d{4}\.\d{2}\.\d{2}) (\d{2}:\d{2}) ([x-]{7}) (.+)$";
+        private static Regex NotificationRegex { get; set; } = new Regex(NotificationPattern, RegexOptions.Multiline);
+
+        public List<Match> GetNotificationParts(string source) {
+            return NotificationRegex.Matches(source).ToList();
+        }
+
         public List<Notification?>? ParseNotifications(string source)
         {
             List<Notification?>? result = [];
-
-            string[] lines = source.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-
-            foreach (string line in lines)
+            foreach (var match in GetNotificationParts(source))
             {
-                if (line[0] == '#') continue;
-                Notification? notification = ParseNotification(line);
-                if (notification == null)
-                {
-                    return null;
-                }
+                Notification? notification = ParseNotification(match.ToString());
                 result.Add(notification);
             }
             return result;

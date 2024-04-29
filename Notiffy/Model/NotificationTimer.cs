@@ -21,6 +21,7 @@ namespace Notiffy.Model
 
         private void CheckNotifications()
         {
+            
             var notification = Program.NotificationManager.RetrieveNotification();
             if (notification != null)
             {

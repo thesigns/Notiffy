@@ -29,19 +29,36 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            richTextBoxNotification = new RichTextBox();
             SuspendLayout();
+            // 
+            // richTextBoxNotification
+            // 
+            richTextBoxNotification.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            richTextBoxNotification.Font = new Font("Consolas", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 238);
+            richTextBoxNotification.Location = new Point(12, 12);
+            richTextBoxNotification.Name = "richTextBoxNotification";
+            richTextBoxNotification.Size = new Size(776, 426);
+            richTextBoxNotification.TabIndex = 0;
+            richTextBoxNotification.Text = "";
+            richTextBoxNotification.TextChanged += richTextBoxNotification_TextChanged;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(richTextBoxNotification);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainForm";
-            Text = "Notiffy 0.1";
+            Text = "Notiffy 1.0";
+            Load += MainForm_Load;
+            Resize += MainForm_Resize;
             ResumeLayout(false);
         }
 
         #endregion
+
+        private RichTextBox richTextBoxNotification;
     }
 }

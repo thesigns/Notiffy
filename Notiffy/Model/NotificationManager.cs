@@ -2,7 +2,7 @@
 {
     public class NotificationManager
     {
-        const string FilePath = "Notifications.txt";
+        const string FilePath = "Resources\\Notifications.txt";
         private List<Notification?> Notifications { get; set; } = [];
 
         public Notification? RetrieveNotification()
@@ -39,7 +39,12 @@
             return null;
         }
 
-        public void SaveNotificationsSource(string source)
+        public void UpdateNotifications(string source) {
+            Notifications = Program.NotificationParser.ParseNotifications(source) ?? [];
+            SaveNotifications(source);
+        }
+
+        public void SaveNotifications(string source)
         {
             try
             {
@@ -51,7 +56,7 @@
             }
         }
 
-        public string LoadNotificationsSource()
+        public string LoadNotifications()
         {
             try
             {
