@@ -8,10 +8,13 @@ Everything in the text box that isn't a Notification definition is treated as co
 
 Notifications are entered as follows:
 
-> 2024.04.29 17:30 ------- This notification will appear only once on April 29th at 6:00 pm and will display this exact text.
+> 2024.04.29 18:00 ------- This notification will appear only once on April 29th at 6:00 pm and will display this exact text.
 
 > 1900.01.01 06:00 xxxxx-- This notification will appear every Monday to Friday at 6:00 am, starting from January 1st, 1900 (essentially forever).
 
 > 1900.01.01 17:00 ----x-- Friday! This notification will appear every Friday at 5:00 pm (again, essentially forever).
 
 That's all!
+
+![Screenshot](/Notiffy/Resources/Screenshot.png?raw=true "Screenshot")
+
