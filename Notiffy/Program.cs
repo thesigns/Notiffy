@@ -1,10 +1,14 @@
+using Notiffy.Model;
 using Notiffy.View;
 
 namespace Notiffy
 {
     internal static class Program
     {
-        public static MainForm MainForm { get; set; } = new MainForm();
+        public static NotificationManager NotificationManager { get; set; } = new();
+        public static NotificationParser NotificationParser { get; set; } = new();
+        public static NotificationTimer NotificationTimer { get; set; } = new();
+        public static MainForm MainForm { get; set; } = new();
 
         [STAThread]
         static void Main()

@@ -16,5 +16,11 @@ namespace Notiffy.View
         {
             InitializeComponent();
         }
+
+
+        public void ShowNotification(string message)
+        {
+
+        }
     }
 }
