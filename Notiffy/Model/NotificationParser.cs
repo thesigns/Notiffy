@@ -1,69 +1,78 @@
-﻿using System.Globalization;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Notiffy.Model
 {
     public class NotificationParser
-    {
-        private static string NotificationPattern { get; set; } = @"^(\d{4}\.\d{2}\.\d{2}) (\d{2}:\d{2}) ([x-]{7}) (.+)$";
+    { 
+        private const string NotificationPattern = @"^((\d{4}|\*)\.(\d{1,2}|\*)\.(\d{1,2}|\*) )?(([-+] |[-+]{7} ){0,2})((\d{1,2}|\*):(\d{1,2}|\*)) (.+)$";
+
+        private const int GroupYear = 2;
+        private const int GroupMonth = 3;
+        private const int GroupDay = 4;
+        private const int GroupWeekdays = 5;
+        private const int GroupHour = 8;
+        private const int GroupMinute = 9;
+        private const int GroupMessage = 10;
+
         private static Regex NotificationRegex { get; set; } = new Regex(NotificationPattern, RegexOptions.Multiline);
 
-        public List<Match> GetNotificationParts(string source) {
+        public List<Match> GetNotificationMatches(string source) {
             return NotificationRegex.Matches(source).ToList();
         }
 
         public List<Notification?>? ParseNotifications(string source)
         {
             List<Notification?>? result = [];
-            foreach (var match in GetNotificationParts(source))
+            foreach (var match in GetNotificationMatches(source))
             {
-                Notification? notification = ParseNotification(match.ToString());
+                Notification? notification = ParseNotification(match);
                 result.Add(notification);
             }
             return result;
         }
 
-        private Notification? ParseNotification(string source)
+        private Notification? ParseNotification(Match match)
         {
-            var parts = source.Split(' ', 4, StringSplitOptions.RemoveEmptyEntries).ToList();
-            if (parts.Count != 4)
-            {
-                return null;
-            }
-            var dateTime = ParseTime(parts[0] + " " + parts[1]);
-            var weekedays = ParseWeekdays(parts[2]);
-            if (dateTime == null || weekedays == null)
-            {
-                return null;
-            }
-            var message = parts[3];
-            return new()
-            {
-                Notified = false,
-                Time = (DateTime)dateTime,
-                Weekdays = weekedays,
-                Message = message
-            };
-        }
+            Notification notification = new();
 
-        private DateTime? ParseTime(string source)
-        {
-            if (DateTime.TryParseExact(source, "yyyy.MM.dd HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTime))
+            notification.Year = match.Groups[GroupYear].Value == "*" | match.Groups[GroupYear].Value == "" ? -1 : int.Parse(match.Groups[GroupYear].Value);
+            notification.Month = match.Groups[GroupMonth].Value == "*" | match.Groups[GroupMonth].Value == "" ? -1 : int.Parse(match.Groups[GroupMonth].Value);
+            notification.Day = match.Groups[GroupDay].Value == "*" | match.Groups[GroupDay].Value == "" ? -1 : int.Parse(match.Groups[GroupDay].Value);
+
+            var weekDays = match.Groups[GroupWeekdays].Value.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            if (weekDays.Count() == 0)
             {
-                return dateTime;
+                notification.WeekdaysOdd = Enumerable.Repeat(true, 7).ToList();
+                notification.WeekdaysEven = Enumerable.Repeat(true, 7).ToList();
+            }
+            else if (weekDays.Count() == 1)
+            {
+                notification.WeekdaysOdd = ParseWeekdays(weekDays[0]) ?? Enumerable.Repeat(false, 7).ToList();
+                notification.WeekdaysEven = notification.WeekdaysOdd;
             }
             else
             {
-                return null;
+                notification.WeekdaysOdd = ParseWeekdays(weekDays[0]) ?? Enumerable.Repeat(false, 7).ToList();
+                notification.WeekdaysEven = ParseWeekdays(weekDays[1]) ?? Enumerable.Repeat(false, 7).ToList();
             }
+
+            notification.Hour = match.Groups[GroupHour].Value == "*" ? -1 : int.Parse(match.Groups[GroupHour].Value);
+            notification.Minute = match.Groups[GroupMinute].Value == "*" ? -1 : int.Parse(match.Groups[GroupMinute].Value);
+            notification.Message = match.Groups[GroupMessage].Value;
+
+            return notification;
         }
 
         private List<bool>? ParseWeekdays(string source)
         {
+            source = source.Trim();
             List<bool> result = source.Select(c => c == '-' ? false : true).ToList();
             if (result.Count == 7)
             {
                 return result;
+            } else if (result.Count == 1)
+            {
+                return Enumerable.Repeat(result[0], 7).ToList();
             }
             return null;
         }

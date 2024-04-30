@@ -1,20 +1,31 @@
-# Notiffy 1.0
+# Notiffy 2.0
 
-Notiffy is an ultra-minimalist notification app for Windows.
+Notiffy is an ultra-minimalist app that sends notifications to the user in Windows.
 
-The interface consists of a single text box.
+The Notiffy interface consists of a single text field that can be minimized to the Windows Tray.
 
-Everything in the text box that isn't a notification definition is treated as comment.
+Everything in the text field that is not a notification definition is treated as a comment. Correctly formatted notifications are highlighted in green.
 
-Notification definitions are entered as follows:
+Below are examples of how to format notifications:
 
-> 2024.04.29 18:00 ------- This notification will appear only once on April 29th at 6:00 pm and will display this exact text.
+> 22:00 Time for bedtime!
+A notification with the text "Time for bedtime!" will appear every day at 10 PM.
 
-> 1900.01.01 06:00 xxxxx-- This notification will appear every Monday to Friday at 6:00 am, starting from January 1st, 1900 (essentially forever).
+> *.12.25 8:00 Christmas!
+A notification with the text "Christmas!" will appear every Christmas at 8 AM.
 
-> 1900.01.01 17:00 ----x-- Friday! This notification will appear every Friday at 5:00 pm (again, essentially forever).
+> *.*.* 12:* Message every minute!
+A notification with the text "Message every minute!" will appear every day, every minute from 12:00 to 12:59 PM.
 
-If the notification definition is highlighted in green, it means it is formatted properly.
+> + - 6:00 Time to work!
+A notification with the text "Time to work!" will appear on odd weeks at 6 AM and will not appear on even weeks.
+
+> +-+-+-- 8:30 Time to work!
+A notification with the text "Time to work!" will appear on Monday, Tuesday, and Wednesday at 8:30 AM.
+
+> *.5.* + - 8:00 Time to work!
+> *.5.* - -----++ 17:00 Time to work!
+A notification with the text "Time to work!" will appear in May on odd weeks at 8 AM and on even weeks during weekends at 5 PM.
 
 That's all!
 

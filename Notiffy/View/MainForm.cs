@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
 namespace Notiffy.View
@@ -42,8 +43,14 @@ namespace Notiffy.View
             richTextBoxNotification.SelectAll();
             richTextBoxNotification.SelectionColor = Color.DimGray;
             richTextBoxNotification.SelectionFont = new Font(richTextBoxNotification.Font, FontStyle.Regular);
-            foreach (var match in Program.NotificationParser.GetNotificationParts(richTextBoxNotification.Text))
+            foreach (var match in Program.NotificationParser.GetNotificationMatches(richTextBoxNotification.Text))
             {
+                var str = "Count: " + match.Groups.Count + "\n";
+                for (var i = 0; i < match.Groups.Count; i++)
+                {
+                    str += i + ": " + match.Groups[i].Value + "\n";
+                }
+
                 richTextBoxNotification.Select(match.Index, match.Length);
                 richTextBoxNotification.SelectionColor = Color.Green;
                 richTextBoxNotification.SelectionFont = new Font(richTextBoxNotification.Font, FontStyle.Bold);
