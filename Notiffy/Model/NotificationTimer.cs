@@ -16,16 +16,20 @@ namespace Notiffy.Model
 
         private void OnTimerElapsed(object? sender, ElapsedEventArgs e)
         {
+            _timer.Stop(); // Zatrzymaj timer, aby uniknąć nakładania się wywołań
             CheckNotifications();
+            _timer.Start(); // Restart timer
         }
 
         private void CheckNotifications()
         {
-            
             var notification = Program.NotificationManager.RetrieveNotification();
             if (notification != null)
             {
-                Program.MainForm.ShowNotification(notification.Message);
+                // Wywołanie ShowNotification na wątku GUI
+                Program.MainForm.Invoke(new Action(() => {
+                    Program.MainForm.ShowNotification(notification.Message);
+                }));
             }
         }
     }

@@ -51,7 +51,7 @@
             Controls.Add(richTextBoxNotification);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainForm";
-            Text = "Notiffy 2.0";
+            Text = "Notiffy 2.1";
             Load += MainForm_Load;
             Resize += MainForm_Resize;
             ResumeLayout(false);

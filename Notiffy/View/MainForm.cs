@@ -12,11 +12,23 @@ namespace Notiffy.View
         public MainForm()
         {
             InitializeComponent();
+            this.FormClosing += MainForm_FormClosing;
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+                Hide();
+                notifyIcon.Visible = true;
+            }
         }
 
         public void ShowNotification(string message)
         {
-            DialogResult result = MessageBox.Show(message, "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            NotificationForm nf = new();
+            nf.ShowYourself(message);
         }
 
         [DllImport("user32.dll")]

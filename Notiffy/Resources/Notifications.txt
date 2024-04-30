@@ -1,6 +1,6 @@
 Notiffy is an ultra-minimalist app that sends notifications to the user in Windows.
 
-The Notiffy interface consists of a single text field that can be minimized to the Windows Tray.
+The Notiffy interface consists of a window with a single text field that can be minimized to the Windows Tray.
 
 Everything in the text field that is not a notification definition is treated as a comment. Correctly formatted notifications are highlighted in green.
 
